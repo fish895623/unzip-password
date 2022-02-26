@@ -9,9 +9,9 @@ SET = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 class ZipCrack:
     def __init__(
-        self,
-        filename: str,
-        path: str = "output",
+            self,
+            filename: str,
+            path: str = "output",
     ):
         """
 
@@ -27,11 +27,11 @@ class ZipCrack:
         while True:
             try:
                 if (
-                    zip_file.extractall(
-                        path=self.path,
-                        pwd=str(TRY).encode("utf-8"),
-                    )
-                    is None
+                        zip_file.extractall(
+                            path=self.path,
+                            pwd=str(TRY).encode("utf-8"),
+                        )
+                        is None
                 ):
                     return TRY
             except RuntimeError:
