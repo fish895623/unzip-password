@@ -1,6 +1,6 @@
-import zlib
-import zipfile
 import time
+import zipfile
+import zlib
 
 start_time = time.time()
 
@@ -9,49 +9,44 @@ SET = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 class ZipCrack:
     def __init__(
-            self,
-            filename: str,
-            path: str = "output",
+        self,
+        filename: str,
+        path: str = "output",
     ):
         """
+        Initialize Cracking.
 
-
+        Initializing
         :param filename:  zip file to crack
         :param path:      path to extract file  default -> output
         """
         self.filename = filename
         self.path = path
+        self.zip_file = zipfile.ZipFile(self.filename, "r")
 
-    def run(self) -> int:
-        TRY = 0
+    def run(self) -> str:
+        """Start Crack
+        :return: Password of zip file
+        """
+        _try = 0
         while True:
             try:
                 if (
-                        zip_file.extractall(
-                            path=self.path,
-                            pwd=str(TRY).encode("utf-8"),
-                        )
-                        is None
+                    self.zip_file.extractall(
+                        path=self.path,
+                        pwd=str(_try).encode("utf-8"),
+                    )
+                    is None
                 ):
-                    return TRY
+                    return str(_try)
             except RuntimeError:
                 pass
             except zlib.error:
                 pass
-            TRY += 1
+            _try += 1
 
 
 if __name__ == "__main__":
-    zip_file = zipfile.ZipFile("zipCrack.zip", "r")
-    TRY = 0
-    while True:
-        try:
-            if zip_file.extractall(path="output", pwd=str(TRY).encode("utf-8")) is None:
-                break
-        except RuntimeError:
-            pass
-        except zlib.error:
-            pass
-        TRY += 1
-
-    print(TRY)
+    app = ZipCrack(filename="zipCrack.zip", path="output")
+    password = app.run()
+    print(password)
