@@ -1,12 +1,6 @@
-import gc
-import time
 import zipfile
 import zlib
 from itertools import product
-
-gc.set_threshold(1000, 100, 100)
-
-start_time = time.time()
 
 SET = "abcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -38,17 +32,16 @@ class ZipCrack:
                 to_attempt = product(SET, repeat=length)
                 _length += 1
                 for attempt in to_attempt:
-                    a = "".join(attempt)
-                    print(a)
                     try:
+                        _password = "".join(attempt)
                         if (
                             self.zip_file.extractall(
                                 path=self.path,
-                                pwd=a.encode("utf-8"),
+                                pwd=_password.encode("utf-8"),
                             )
                             is None
                         ):
-                            return a
+                            return _password
                     except RuntimeError:
                         pass
                     except zlib.error:
@@ -60,8 +53,3 @@ class ZipCrack:
 if __name__ == "__main__":
     app = ZipCrack(filename="zipCrack.zip", path="output")
     password = app.run()
-    # print(password)
-    # for length in range(1, 8):  # only do lengths of 1 + 2
-    #     to_attempt = product(SET, repeat=length)
-    #     for attempt in to_attempt:
-    #         print("".join(attempt))
